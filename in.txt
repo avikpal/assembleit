@@ -1,0 +1,11 @@
+xra a
+mov b,a
+mvi c,20
+loop:inr b
+add b
+dcr c
+jnz loop
+xthl
+jmp loop1
+loop1:mov b,c
+hlt
