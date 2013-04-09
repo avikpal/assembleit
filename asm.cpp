@@ -10,10 +10,10 @@
 #define MAX 100
 
 using namespace std;
-int plc=0;
-int disp_addr=0;
+int plc=0,plc_disp=0;
+//int disp_addr=0;
 class mot_mem{
-  string opcode;
+	string opcode;
 	int length;
 	string mach_code;
 public:
@@ -130,6 +130,7 @@ void parse_line(string line){
 		//cout<<opcode<<endl;
 		mot_mem temp=mot_mem::search_mot(opcode);
 		plc+=temp.get_len();
+		//cout<<plc<<endl;
 		}
 }
 
@@ -229,7 +230,9 @@ void generate(string line)
 { 
  ofstream f;string mach_code;
  //f.open("output.txt");
- string label,opc,mcode;   
+ //if(is_org(input,1)) return;
+ string label,opc,mcode;
+    
  int pos;
  pos=line.find(";");
  if(pos!=-1)
@@ -254,43 +257,67 @@ void generate(string line)
            //f<<line<<" ";
 	   //cout<<"in generate"<<opc<<endl;   
            mot_mem temp=temp.search_mot(opc);
-           disp_addr+=temp.get_len();
+           //plc_disp+=temp.get_len();
            if(pos<line.length())
              line=line.substr(pos+1);
            else
              line="";
 
            mach_code=getmach(line,temp.get_code(1));
-	   cout<<to_hex(disp_addr-1)<<" "<<mach_code<<endl;
+	   cout<<to_hex(plc_disp)<<" "<<mach_code<<endl;
            //f<<mach_code<<"\n";
+		plc_disp+=temp.get_len();
         }
         
      }
  f.close();  
 }
-/*
-int in_hex(string str){
-int result;
-for(int i=str.length()-1;i>=0;i
+
+bool is_org(string line, int flag){
+if(flag==0){
+int pos=line.find("ORG");
+if(pos!=-1){
+	//cout<<"saw org"<<endl;
+ 	int sp=line.find(" ");
+ 	if(sp==-1){cout<<"wrong format"<<endl;exit(1);}
+ 	else{	string val=line.substr(sp+1); int pos_cap=val.find("H"); 
+		if(pos_cap==-1)
+			{ cout<<"format error hex error"<<endl;exit(1);}
+	       	val=val.substr(0,pos_cap);
+		//cout<<val<<endl;
+		//cout<<atoi(val.c_str())<<endl;
+		plc=atoi(val.c_str());//cout<<plc<<endl;
+		return true; }}
+ else return false;
+	  }
+else{int pos=line.find("ORG");
+if(pos!=-1){
+	//cout<<"saw org"<<endl;
+ 	int sp=line.find(" ");
+ 	if(sp==-1){cout<<"wrong format"<<endl;exit(1);}
+ 	else{	string val=line.substr(sp+1); int pos_cap=val.find("H"); 
+		if(pos_cap==-1)
+			{ cout<<"format error hex error"<<endl;exit(1);}
+	       	val=val.substr(0,pos_cap);
+		//cout<<val<<endl;
+		//cout<<atoi(val.c_str())<<endl;
+		plc_disp=atoi(val.c_str());
+		//cout<<plc_disp<<endl;
+		return true; }}
+ else return false;	 
+	}
 }
 
-bool is_org(string input){
-int pos=line.find("org");
-if(pos!=-1){
- int sp=line.find(" ");
- if(sp==-1){cout<<wrong format<<endl; exit();}
- else{string val=line.substr(sp+1);plc+=in_hex(val); return true; }
-else return false;
-}}
-*/
 
 
 void load_file(){
  ifstream fin;
  fin.open("in.txt");
  string input;
- while(getline(fin,input))
-	parse_line(input);
+ while(getline(fin,input)){
+	if(!is_org(input,0))
+	parse_line(input);}
+	
  fin.close();
 }
 
@@ -298,8 +325,10 @@ void output(){
 	ifstream fin;
 	fin.open("in.txt");
  string input;
- while(getline(fin,input))
-	generate(input);
+ while(getline(fin,input)){
+	if(!(is_org(input,1)))
+	//if((int pos=input.find("ORG"))==-1)
+	generate(input);}
  fin.close();           
 }
 
