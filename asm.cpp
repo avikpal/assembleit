@@ -312,7 +312,7 @@ if(pos!=-1){
 
 void load_file(){
  ifstream fin;
- fin.open("in.txt");
+ fin.open("temp.txt");
  string input;
  while(getline(fin,input)){
 	if(!is_org(input,0))
@@ -323,7 +323,7 @@ void load_file(){
 
 void output(){
 	ifstream fin;
-	fin.open("in.txt");
+	fin.open("temp.txt");
  string input;
  while(getline(fin,input)){
 	if(!(is_org(input,1)))
