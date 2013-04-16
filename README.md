@@ -5,9 +5,9 @@ rudimentary 8085 assembler,it is in a very early stage of development, new featu
 
 Instruction
 ===========
-$ g++ asm.cpp -o myasm
+$ chmod +x asm.sh
 
-$ ./myasm
+$ ./asm.sh
 
 
 in.txt is the input file where the assembly code is to be written 
