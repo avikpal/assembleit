@@ -47,7 +47,6 @@ public:
 
 	static symbol_tab search_sym(string symbol);
 	static void insert_sym(string symbol);
-//friend void insert_sym(string sym);
 };
 
 list<mot_mem>mot[MAX];
@@ -66,7 +65,6 @@ mot_mem mot_mem::search_mot(string opc){
 //cout<<"in search_mot()"<<endl;
 int key=hash(opc,MAX);
 list<mot_mem>::iterator i;
-//list<mot_mem>temp=mot[key];
 for(i=mot[key].begin();i!=mot[key].end();i++)
 	if((*i).get_code(0)==opc) 
 	return *i;
@@ -90,7 +88,6 @@ void symbol_tab::insert_sym(string symbol){
 	int key=hash(symbol,MAX);
 	symbol_tab temp=symbol_tab(symbol,plc);
 	sym[key].push_back(temp);
-	//cout<<symbol<<"inserted"<<endl;
 }
 
 void mot_mem::get_mot(){
