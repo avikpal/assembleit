@@ -62,7 +62,6 @@ int hash(string s,int div){
 
 
 mot_mem mot_mem::search_mot(string opc){
-//cout<<"in search_mot()"<<endl;
 int key=hash(opc,MAX);
 list<mot_mem>::iterator i;
 for(i=mot[key].begin();i!=mot[key].end();i++)
@@ -97,38 +96,30 @@ void mot_mem::get_mot(){
 		fin>>opc_temp;fin>>len;fin>>mach_code;
 		mot_mem	temp=mot_mem(opc_temp,len,mach_code);
 		key=hash(opc_temp,MAX);
-		//temp.print_mot();
  		mot[key].push_back(temp);}
-	//cout<<"exiting get_mot()"<<endl;
 	fin.close();
 }
 
 void parse_line(string line){
-	//cout<<"in parse_line()"<<endl;
 	string label,opcode,mcode;
 	unsigned pos;
 	pos=line.find(";");
-	if(pos!=-1){ //cout<<"in comment check"<<endl; 
+	if(pos!=-1){  
 		line=line.substr(0,pos);}
 	
 	if(line!=""){
-		//cout<<line<<endl;
 		pos=line.find(":");
-		//cout<<pos<<endl;	
 		if(pos!=-1){
 			label=line.substr(0,pos);
 			line=line.substr(pos+1);
-			//cout<<"label:->"<<label<<endl;
 			symbol_tab::insert_sym(label);}
 		pos=line.find(" ");
 		if(pos==-1){
 			pos=line.length();}
 		opcode=line.substr(0,pos);
-		//cout<<opcode<<endl;
 		mot_mem temp=mot_mem::search_mot(opcode);
 		plc+=temp.get_len();
-		//cout<<plc<<endl;
-		}
+			}
 }
 
 
