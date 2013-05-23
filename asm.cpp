@@ -11,7 +11,6 @@
 
 using namespace std;
 int plc=0,plc_disp=0;
-//int disp_addr=0;
 class mot_mem{
 	string opcode;
 	int length;
