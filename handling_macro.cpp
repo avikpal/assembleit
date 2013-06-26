@@ -1,3 +1,4 @@
+// code for handling macro in the input file
 #include<iostream>
 #include<stdlib.h>
 #include<string>
